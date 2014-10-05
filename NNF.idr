@@ -20,7 +20,7 @@ mutual
   nnf' (FAnd a b) = FOr (nnf' a) (nnf' b)
   nnf' (FOr a b)  = FAnd (nnf' a) (nnf' b)
 
-nnfInterp : (f : Form BasePred) -> interp f = interp (nnf f)
+nnfInterp : (f : Form BasePred) -> interp interpBasePred f = interp interpBasePred (nnf f)
 nnfInterp FTrue      = refl
 nnfInterp FFalse     = refl
 nnfInterp (Single _) = refl
