@@ -30,7 +30,7 @@ nnfInterp : (f : Step1.Form.Form (Pred n)) -> (xs : Vect n ZZ) -> Step1.Form.int
 nnfInterp FTrue      _  = refl
 nnfInterp FFalse     _  = refl
 nnfInterp (Single _) _  = refl
-nnfInterp (FNot a)   _  = believe_me _|_ -- TODO
+nnfInterp (FNot a)   _  = ?nnfInterpNot
 nnfInterp (FAnd a b) xs = let ihf_0 = nnfInterp a xs
                               ihf_1 = nnfInterp b xs in
                           rewrite ihf_0 in
