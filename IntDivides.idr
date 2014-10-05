@@ -1,3 +1,5 @@
 module IntDivides
 
-data IntDivides : Int -> Int -> Type where
+import Data.ZZ
+
+data IntDivides : ZZ -> ZZ -> Type where

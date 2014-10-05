@@ -1,3 +1,5 @@
 module IntLT
 
-data IntLT : Int -> Int -> Type where
+import Data.ZZ
+
+data IntLT : ZZ -> ZZ -> Type where
