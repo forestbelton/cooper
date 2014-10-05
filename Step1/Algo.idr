@@ -1,8 +1,9 @@
-module NNF
+module Step1.Algo
 
 import Data.ZZ
-import Form
-import Pred.BasePred
+
+import Step1.Form
+import Step1.Pred
 
 %default total
 
@@ -21,7 +22,7 @@ mutual
   nnf' (FAnd a b) = FOr (nnf' a) (nnf' b)
   nnf' (FOr a b)  = FAnd (nnf' a) (nnf' b)
 
-nnfInterp : (f : Form (BasePred n)) -> (xs : Vect n ZZ) -> interp (interpBasePred xs) f = interp (interpBasePred  xs) (nnf f)
+nnfInterp : (f : Form (Pred n)) -> (xs : Vect n ZZ) -> interp (interpPred xs) f = interp (interpPred xs) (nnf f)
 nnfInterp FTrue      _  = refl
 nnfInterp FFalse     _  = refl
 nnfInterp (Single _) _  = refl

@@ -1,4 +1,4 @@
-module Form
+module Step1.Form
 
 %default total
 
