@@ -5,24 +5,28 @@ import Data.ZZ
 import Step1.Form
 import Step1.Pred
 
+import Step2.Form
+
 %default total
 
 mutual
-  nnf : Form a -> Form a
+  nnf : Step1.Form.Form a -> Step2.Form.Form a
+  nnf FTrue      = FTrue
+  nnf FFalse     = FFalse
+  nnf (Single p) = Single p
   nnf (FNot a)   = nnf' a
   nnf (FAnd a b) = FAnd (nnf a) (nnf b)
   nnf (FOr a b)  = FOr (nnf a) (nnf b)
-  nnf x          = x
   
-  nnf' : Form a -> Form a
+  nnf' : Step1.Form.Form a -> Step2.Form.Form a
   nnf' FTrue      = FFalse
   nnf' FFalse     = FTrue
-  nnf' (Single p) = FNot (Single p)
+  nnf' (Single p) = NotSingle p
   nnf' (FNot a)   = nnf a
   nnf' (FAnd a b) = FOr (nnf' a) (nnf' b)
   nnf' (FOr a b)  = FAnd (nnf' a) (nnf' b)
 
-nnfInterp : (f : Form (Pred n)) -> (xs : Vect n ZZ) -> interp (interpPred xs) f = interp (interpPred xs) (nnf f)
+nnfInterp : (f : Step1.Form.Form (Pred n)) -> (xs : Vect n ZZ) -> Step1.Form.interp (interpPred xs) f = Step2.Form.interp (interpPred xs) (nnf f)
 nnfInterp FTrue      _  = refl
 nnfInterp FFalse     _  = refl
 nnfInterp (Single _) _  = refl
