@@ -1,5 +1,7 @@
 module IntDivides
 
 import Data.ZZ
+import Divides
 
-data IntDivides : ZZ -> ZZ -> Type where
+IntDivides : ZZ -> ZZ -> Type
+IntDivides a b = divides (absZ a) (absZ b)
