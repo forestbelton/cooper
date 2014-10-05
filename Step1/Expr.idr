@@ -10,6 +10,9 @@ import Data.ZZ
   Add   : Expr n -> Expr n -> Expr n
   Scale : ZZ     -> Expr n -> Expr n
 
+inc : Expr n -> Expr n
+inc x = Add x (Val 1)
+
 evalExpr : Vect n ZZ -> Expr n -> ZZ
 evalExpr _  (Val v)     = v
 evalExpr xs (Var x)     = index x xs
