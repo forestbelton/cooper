@@ -1,15 +1,17 @@
 module Pred.BasePred
 
+import IntLT
+import IntDivides
 import Expr
 
 %default total
 
-%elim data BasePred : Type where
-  PredEQ      : Expr -> Expr -> BasePred
-  PredLT      : Expr -> Expr -> BasePred
-  PredDivides : Int  -> Expr -> BasePred
+%elim data BasePred : (n : Nat) -> Type where
+  PredEQ      : Expr n -> Expr n -> BasePred n
+  PredLT      : Expr n -> Expr n -> BasePred n
+  PredDivides : Int    -> Expr n -> BasePred n
 
-interpBasePred : BasePred -> Type
-interpBasePred (PredEQ a b)      = a = b
-interpBasePred (PredLT a b)      = believe_me _|_ -- LT a b
-interpBasePred (PredDivides k a) = believe_me _|_ -- divides k a
+interpBasePred : Vect n Int -> BasePred n -> Type
+interpBasePred xs (PredEQ a b)      = a = b
+interpBasePred xs (PredLT a b)      = IntLT (evalExpr xs a) (evalExpr xs b)
+interpBasePred xs (PredDivides k a) = IntDivides k (evalExpr xs a)

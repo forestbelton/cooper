@@ -20,16 +20,16 @@ mutual
   nnf' (FAnd a b) = FOr (nnf' a) (nnf' b)
   nnf' (FOr a b)  = FAnd (nnf' a) (nnf' b)
 
-nnfInterp : (f : Form BasePred) -> interp interpBasePred f = interp interpBasePred (nnf f)
-nnfInterp FTrue      = refl
-nnfInterp FFalse     = refl
-nnfInterp (Single _) = refl
-nnfInterp (FNot a)   = believe_me _|_ -- TODO
-nnfInterp (FAnd a b) = let ihf_0 = nnfInterp a
-                           ihf_1 = nnfInterp b in
-                       rewrite ihf_0 in
-                       rewrite ihf_1 in refl
-nnfInterp (FOr a b)  = let ihf_0 = nnfInterp a
-                           ihf_1 = nnfInterp b in
-                       rewrite ihf_0 in
-                       rewrite ihf_1 in refl
+nnfInterp : (f : Form (BasePred n)) -> (xs : Vect n Int) -> interp (interpBasePred xs) f = interp (interpBasePred  xs) (nnf f)
+nnfInterp FTrue      _  = refl
+nnfInterp FFalse     _  = refl
+nnfInterp (Single _) _  = refl
+nnfInterp (FNot a)   _  = believe_me _|_ -- TODO
+nnfInterp (FAnd a b) xs = let ihf_0 = nnfInterp a xs
+                              ihf_1 = nnfInterp b xs in
+                          rewrite ihf_0 in
+                          rewrite ihf_1 in refl
+nnfInterp (FOr a b)  xs = let ihf_0 = nnfInterp a xs
+                              ihf_1 = nnfInterp b xs in
+                          rewrite ihf_0 in
+                          rewrite ihf_1 in refl
