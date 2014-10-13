@@ -53,3 +53,33 @@ substForm (FOr a b)  e = FOr (substForm a e) (substForm a e)
 firstMajorDisjunct : Nat -> Form (Step4.Pred.Pred (S n)) -> Form (Step1.Pred.Pred n)
 firstMajorDisjunct Z     _ = FFalse
 firstMajorDisjunct (S k) a = FOr (substForm a (Val (Pos (S k)))) (firstMajorDisjunct k a)
+
+-- B is the set of all terms b appearing in the form x' < b.
+-- It's okay for B to be a list here because repeating items
+-- in B do not change the meaning of the disjunct.
+getBPred : Step4.Pred.Pred (S n) -> List (Expr n)
+getBPred (PredGT b) = [b]
+getBPred _          = []
+
+getBForm : Form (Step4.Pred.Pred (S n)) -> List (Expr n)
+getBForm (Single p) = getBPred p
+getBForm (FAnd a b) = getBForm a ++ getBForm b
+getBForm (FOr a b)  = getBForm a ++ getBForm b
+getBForm _          = []
+
+-- iteration over B
+secondMinorDisjunct : List (Expr n) -> Nat -> Form (Step4.Pred.Pred (S n)) -> Form (Step1.Pred.Pred n)
+secondMinorDisjunct []        _ _ = FFalse
+secondMinorDisjunct (b :: bs) j e = FOr (substForm e (Add b (Val (Pos j)))) (secondMinorDisjunct bs j e)
+
+-- F[j + b], for 1 <= j <= delta and b in B
+secondMajorDisjunct : Nat -> List (Expr n) -> Form (Step4.Pred.Pred (S n)) -> Form (Step1.Pred.Pred n)
+secondMajorDisjunct Z     _  _ = FFalse
+secondMajorDisjunct (S k) bs a = FOr (secondMinorDisjunct bs k a) (secondMajorDisjunct k bs a)
+
+step5 : Form (Step4.Pred.Pred (S n)) -> Form (Step1.Pred.Pred n)
+step5 a = FOr left right
+  where delta : Nat
+        delta = deltaForm a
+        left  = firstMajorDisjunct delta (leftInfForm a)
+        right = secondMajorDisjunct delta (getBForm a) a

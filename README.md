@@ -12,7 +12,7 @@ Progress
 | Remove redundant predicates                                  | ✓ | ✘ |
 | Move quantified variable to one side of literal              | ✘ | ✘ |
 | Remove coefficients from quantified variable                 | ✘ | ✘ |
-| Construct left infinite projection and remove quantification | ✘ | ✘ |
+| Construct left infinite projection and remove quantification | ✓ | ✘ |
 
 Each step will have specialized ADTs for convenience.
 
