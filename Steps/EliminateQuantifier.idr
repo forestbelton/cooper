@@ -1,4 +1,4 @@
-module Step5.Algo
+module Steps.EliminateQuantifier
 
 import Step1.Expr
 

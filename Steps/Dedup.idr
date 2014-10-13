@@ -1,6 +1,4 @@
-module Step2.Algo
-
-import Data.ZZ
+module Steps.Dedup
 
 import Formulas.NNF
 import Formulas.NotLess

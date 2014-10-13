@@ -1,4 +1,4 @@
-module Step1.Algo
+module Steps.NNF
 
 import Formulas.Initial
 import Formulas.NNF
