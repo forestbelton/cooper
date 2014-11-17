@@ -34,14 +34,14 @@ deltaForm (Or a b)   = lcm (deltaForm a) (deltaForm b)
 deltaForm _          = 1
 
 -- substition of x -> j in a literal
-substPred : Reduced (S n) -> Expr n -> Dedup n
-substPred (LessThan a)     e = LessThan e a
-substPred (GreaterThan b)  e = LessThan b e
-substPred (Divides k c)    e = Divides k (substExpr e c)
-substPred (NotDivides l d) e = ?bla -- PredNotDivides l (substExpr e d)
+substPred : Reduced n -> Expr n -> Dedup n
+substPred (LessThan a) e = LessThan (substExpr e a) a
+--substPred (GreaterThan b)  e = LessThan b e
+--substPred (Divides k c)    e = Divides k (substExpr e c)
+--substPred (NotDivides l d) e = ?bla -- PredNotDivides l (substExpr e d)
 
 -- F -> j -> F[j]
-substForm : NotLess (Reduced (S n)) -> Expr n -> NotLess (Dedup n)
+substForm : NotLess (Reduced n) -> Expr n -> NotLess (Dedup n)
 substForm True      _  = True
 substForm False     _  = False
 substForm (Single p) e = Single (substPred p e)
@@ -49,7 +49,7 @@ substForm (And a b) e  = And (substForm a e) (substForm a e)
 substForm (Or a b)  e  = Or  (substForm a e) (substForm a e)
 
 -- first major disjunct. F_{-\infty}[j], for 1 <= j <= delta
-firstMajorDisjunct : Nat -> NotLess (Reduced (S n)) -> NotLess (Dedup n)
+firstMajorDisjunct : Nat -> NotLess (Reduced n) -> NotLess (Dedup n)
 firstMajorDisjunct Z     _ = False
 firstMajorDisjunct (S k) a = Or (substForm a (Val (Pos (S k)))) (firstMajorDisjunct k a)
 
